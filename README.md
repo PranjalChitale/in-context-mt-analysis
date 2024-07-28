@@ -1,4 +1,7 @@
 # in-context-mt-analysis
+[📜 Paper](https://arxiv.org/abs/2401.12097) | [📔 Slides](https://docs.google.com/presentation/d/1ufJZ0qkC8mBUnBQm1w1T-7YgPPgYGK_KlaJCkbzcXd0/edit?usp=drive_link) | [▶️ Video](https://underline.io/events/466/sessions/18223/lecture/102929-an-empirical-study-of-in-context-learning-in-llms-for-machine-translation)
+
+
 
 The official code repository associated with the paper titled "[An Empirical Study of In-context Learning in LLMs for Machine Translation](https://arxiv.org/abs/2401.12097)" (ACL 2024 Findings). \
  In this work, we comprehensively studies the in-context machine translation capabilities of LLMs.
