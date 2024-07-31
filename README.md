@@ -1,10 +1,8 @@
 # in-context-mt-analysis
+
 [📜 Paper](https://arxiv.org/abs/2401.12097) | [📔 Slides](https://docs.google.com/presentation/d/1ufJZ0qkC8mBUnBQm1w1T-7YgPPgYGK_KlaJCkbzcXd0/edit?usp=drive_link) | [▶️ Video](https://underline.io/events/466/sessions/18223/lecture/102929-an-empirical-study-of-in-context-learning-in-llms-for-machine-translation)
 
-
-
-The official code repository associated with the paper titled "[An Empirical Study of In-context Learning in LLMs for Machine Translation](https://arxiv.org/abs/2401.12097)" (ACL 2024 Findings). \
- In this work, we comprehensively studies the in-context machine translation capabilities of LLMs.
+The official code repository associated with the paper titled "[An Empirical Study of In-context Learning in LLMs for Machine Translation](https://arxiv.org/abs/2401.12097)" (ACL 2024 Findings). In this work, we comprehensively study the in-context machine translation capabilities of LLMs.
 
 ## Overview
 
@@ -30,13 +28,13 @@ python3 -m pip install -r requirements.txt
 ## Data Preparation
 
 ```bash
-python download_data.py --dataset_name DATASET_NAME --langs LANGS
+python src/download_data.py --dataset_name $dataset_name --langs $langs
 ```
 
 **Arguments**
-  * --dataset_name: The name of the dataset to download from the Hugging Face Hub. Choices are facebook/flores and ai4bharat/IN22-Gen. Default is facebook/flores.
+  * `--dataset_name`: The name of the dataset to download from the Hugging Face Hub. Choices are `facebook/flores` and `ai4bharat/IN22-Gen`. Default is `facebook/flores`.
 
-  * --langs: A list of language codes indicating the languages and scripts to download. For example, eng_Latn hin_Deva mar_Deva.
+  * `--langs`: A list of language codes indicating the languages and scripts to download. For example, eng_Latn hin_Deva mar_Deva.
 
 ## Experiments
 
@@ -45,17 +43,20 @@ In this experiment, we keep the demonstrations fixed and consider different inst
 
 ![Instruction Variants](images/instruct_variants.png)
 
-**Experiment-specific Arguments** \
+**Experiment-specific Arguments**
+
 `--instruction_type` (str):
-Type of instruction variant to use with the in-context demonstrations.\
-Choices are:\
-`standard`: Use the standard instruction variant. \
-`generic`: Use the generic instruction variant. \
-`random`: Use the random instruction variant. \
-`contrastive`: Use the contrastive instruction variant. \
-`no_instruct`: Do not use any instruction variant.\
+Type of instruction variant to use with the in-context demonstrations. Choices are:
+* `standard`: Use the standard instruction variant.
+* `generic`: Use the generic instruction variant.
+* `random`: Use the random instruction variant.
+* `contrastive`: Use the contrastive instruction variant.
+* `no_instruct`: Do not use any instruction variant.
+
+<br>
 
 **Example Usage**
+
 ```bash
 python3 src/causal_lm_eval_instruct.py \
 --model_name_or_path $model_name \
@@ -70,21 +71,27 @@ python3 src/causal_lm_eval_instruct.py \
 ```
 
 ### Demonstration Perturbation
+
 * In this experiment, we keep the instruction fixed while apply perturbations to the demonstration to understand what effect does perturbations to the demonstration have on the downstream performance.
-* We also aim to understand the effect of the perturb direction (src/target) on the performance.
+* We also aim to understand the effect of the perturb direction (source/target) on the performance.
+
 #### Homogeneous Perturbation
+
 In this experiment all the demonstrations are perturbed to the same degree.
 
 **Demonstration Perturbation Attacks**
+
 ![Demonstration Perturbation](images/homo_perturb.png)
 
 **Experiment-specific Arguments**
+
 - `--perturb` (bool): Apply perturbations to in-context demonstrations. Default is False.
-- `--perturb_direction` (str): Specify whether to apply perturbations on the source or target side. Choices are source and target. Default is target.
-- `--attack_type` (str): Choose an attack type to apply on the input text during perturbation. Choices are span_noise, word_duplication, ocr, word_order, punctuation_drop_attack, punctuation_add_attack.
+- `--perturb_direction` (str): Specify whether to apply perturbations on the source or target side. Choices are `source` and `target`. Default is `target`.
+- `--attack_type` (str): Choose an attack type to apply on the input text during perturbation. Choices are `span_noise`, `word_duplication`, `ocr`, `word_order`, `punctuation_drop_attack`, `punctuation_add_attack`.
 - `--noise_percentage` (float): Percentage of characters to inject noise into during perturbation. Default is 0.1.
 
 **Example Usage**
+
 ```bash
 python3 src/causal_lm_eval_perturb_homo.py \
 --model_name_or_path $model_name \
@@ -103,21 +110,23 @@ python3 src/causal_lm_eval_perturb_homo.py \
 ```
 
 #### Heterogeneous Perturbation
+
 * In this experiment we aim to determine if spatial proximity to the test example has an effect on the downstream performance or not.
 * For this experiment we consider a 4-shot setting and consider 4 heterogeneous types.
 
-**Experiment-specific Arguments** \
-`--heterogeneous` (bool): Flag to enable heterogeneous perturbations. \
-`--heterogeneous_type` (str):
-Specifies the configuration of clean and noisy demonstrations. The available options and their configurations are as follows:
-- Type I: k-1 clean examples and 1 noisy example.
-- Type II: 1 clean example and k-1 noisy examples.
-- Type III: 1 noisy example and k-1 clean examples.
-- Type IV: k-1 noisy examples and 1 clean example.
+**Experiment-specific Arguments**
+
+* `--heterogeneous` (bool): Flag to enable heterogeneous perturbations.
+* `--heterogeneous_type` (str): Specifies the configuration of clean and noisy demonstrations. The available options and their configurations are as follows:
+  - Type I: k-1 clean examples and 1 noisy example.
+  - Type II: 1 clean example and k-1 noisy examples.
+  - Type III: 1 noisy example and k-1 clean examples.
+  - Type IV: k-1 noisy examples and 1 clean example.
 
 ![Heterogeneous Perturbation](images/hetero_perturb.png)
 
 **Example Usage**
+
 ```bash
 python3 src/causal_lm_eval_perturb_hetero.py \
 --model_name_or_path $model_name \
@@ -135,18 +144,19 @@ python3 src/causal_lm_eval_perturb_hetero.py \
 ```
 
 ### Transitivity Experiment
+
 * In this experiment, we have a two-fold objective we aim to study if models can make transitive associations in-context and whether models are robust to misalignment or misinformation presented in the context.
 * We consider a Pivot translation based setup and consider 4 alignment scenarios.
 
 **Experiment-specific Arguments**
 
 The following arguments are used in the experiment:
-- `--src_to_pivot_fname`: Name or path of the test dataset for evaluation between the source language and the pivot language.
-- `--pivot_to_tgt_fname`: Name or path of the test dataset for evaluation between the pivot language and the target language.
-- `--src_lang`: Source language code.
-- `--pivot_lang`: Pivot language code.
-- `--tgt_lang`: Target language code.
-- `--variant`: This argument defines the alignment scenario being tested.
+* `--src_to_pivot_fname`: Name or path of the test dataset for evaluation between the source language and the pivot language.
+* `--pivot_to_tgt_fname`: Name or path of the test dataset for evaluation between the pivot language and the target language.
+* `--src_lang`: Source language code.
+* `--pivot_lang`: Pivot language code.
+* `--tgt_lang`: Target language code.
+* `--variant`: This argument defines the alignment scenario being tested.
 
 **Alignment Scenarios**
 
@@ -161,6 +171,7 @@ The source to pivot translation (X’s translation) is misaligned, disregarding 
 The target language is misaligned. This means the target translations are incorrect or shifted.
 
 **Example Usage**
+
 ```bash
 python3 causal_lm_eval_transitivity.py \
 --model_name_or_path $model_name \
@@ -172,11 +183,11 @@ python3 causal_lm_eval_transitivity.py \
 --tgt_lang $tgt_lang \
 --batch_size 16 \
 --max_new_tokens 256 \
---variant $variant \ 
---seed 42
+--variant $variant
 ```
 
 ### Allied Task Experiment
+
 * In this experiment, we aim to study if demonstrations from an Allied Task can be a sufficient proxy to guide the model to do the Test-time Task.
 * We consider In-Context Examples from an auxiliary language pair, wherein the `tgt_lang` matches the test-time target language. You can specify the development set to be used by using the `aux_lang` argument.
 * We consider 4 choices for auxiliary language
@@ -186,13 +197,15 @@ python3 causal_lm_eval_transitivity.py \
   - Randomly chosen language.
 
 **Experiment-specific Arguments**
-- `--src_lang`: Test-time Source language code.
-- `--aux_lang`: Auxiliary source language code.
-- `--tgt_lang`: Target language code.
 
-This script picks up the test file of src_lang to tgt_lang direction and dev file of aux_lang to tgt_lang direction to prepare the demonstrations.
+* `--src_lang`: Test-time Source language code.
+* `--aux_lang`: Auxiliary source language code.
+* `--tgt_lang`: Target language code.
+
+This script picks up the test file of `src_lang` to `tgt_lang` direction and dev file of `aux_lang` to `tgt_lang` direction to prepare the demonstrations.
 
 **Example Usage**
+
 ```bash
 dev_fname="data/dev/flores_${aux_lang}-${tgt_lang}.jsonl"
 test_fname="data/test/${test_set}_${src_lang}-${tgt_lang}.jsonl"
@@ -206,16 +219,17 @@ python3 src/causal_lm_eval_implicit.py \
 --tgt_lang $tgt_lang \
 --aux_lang $aux_lang \
 --n_shot $n_shot \
---seed 42 \ 
 --batch_size $batch_size
 ```
 
 ### Directionality Experiment
+
 * In this experiment, we aim to study if the directionality (nature of originality) match or mismatch between the in-context demonstration set and the test set has an impact on the downstream performance.
 * We consider In-Context Examples from two types of dev sets, Source Original and Target Original. 
 * You can specify the development set to be used by using the `dev_fname` argument.
 
 **Example Usage**
+
 ```bash
 python3 src/causal_lm_eval_directionality.py \
 --model_name_or_path $model_name \
@@ -226,13 +240,14 @@ python3 src/causal_lm_eval_directionality.py \
 --tgt_lang $tgt_lang \
 --n_shot $n_shot \
 --batch_size $batch_size \
---max_new_tokens 256 \
---seed $seed
+--max_new_tokens 256
 ```
 
 ## Helper Scripts
+
 ### Demonstration Perturbations
-* `src/attack.py` is a Python script designed to perturb sentences in a given input file by introducing various types of noise. 
+
+* `src/attack.py` is a Python script designed to perturb sentences in a given input file by introducing various types of noise.
 * This is useful for tasks such as data augmentation, robustness testing, and simulating real-world textual data imperfections.
 
 **Features**
@@ -252,7 +267,7 @@ python3 attack.py \
 --output_file $output_file_path \
 --language $lang \
 --attack_type $attack_type \
-[--noise_percentage $noise_percentage \
+[--noise_percentage $noise_percentage] \
 [--repetition_percentage $noise_percentage] \
 [--punctuation_percentage $noise_percentage] \
 [--ocr_percentage $noise_percentage] \
@@ -265,7 +280,7 @@ python3 attack.py \
 - `--language`: Language code of the input sentence in the FLORES format lang_Script (e.g., eng_Latn).
 - `--attack_type`: Type of attack to apply on the input text. \
 Choose from 
-[**span_noise**, **word_duplication**, **punctuation_drop_attack**,**punctuation_add_attack**, **ocr**, **word_order**].
+[`span_noise`, `word_duplication`, `punctuation_drop_attack`,`punctuation_add_attack`, `ocr`, `word_order`].
 
 **Attack-specific Arguments**
 
@@ -276,6 +291,7 @@ Choose from
 - `--permutation_percentage`: Percentage of words to permute (default: 0.2).
 
 **Alternative Usage in a Python script**
+
 ```python
 from attack import apply_attack
 
@@ -319,6 +335,8 @@ This work is licensed under a
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
 
 ## Citation
+
+If you find our work to be useful, please cite our work:
 
 ```bibtex
 @inproceedings{chitale-etal-2024-empirical,
