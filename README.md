@@ -340,11 +340,20 @@ If you find our work to be useful, please cite our work:
 
 ```bibtex
 @inproceedings{chitale-etal-2024-empirical,
-  title = {An Empirical Study of In-context Learning in LLMs for Machine Translation},
-  author = {Pranjal A. Chitale and Jay Gala and Raj Dabre},
-  booktitle = {Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics},
-  year = {2024},
-  publisher = {Association for Computational Linguistics},
-  url = {https://arxiv.org/abs/2401.12097}
+    title = "An Empirical Study of In-context Learning in {LLM}s for Machine Translation",
+    author = "Chitale, Pranjal  and
+      Gala, Jay  and
+      Dabre, Raj",
+    editor = "Ku, Lun-Wei  and
+      Martins, Andre  and
+      Srikumar, Vivek",
+    booktitle = "Findings of the Association for Computational Linguistics ACL 2024",
+    month = aug,
+    year = "2024",
+    address = "Bangkok, Thailand and virtual meeting",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.findings-acl.440",
+    pages = "7384--7406",
+    abstract = "Recent interest has surged in employing Large Language Models (LLMs) for machine translation (MT) via in-context learning (ICL) (Vilar et al., 2023). Most prior studies primarily focus on optimizing translation quality, with limited attention to understanding the specific aspects of ICL that influence the said quality. To this end, we perform the first of its kind, exhaustive study of in-context learning for machine translation (MT). We first establish that ICL is primarily example-driven and not instruction-driven. Following this, we conduct an extensive exploration of various aspects of the examples to understand their influence on downstream performance. Our analysis includes factors such as quality and quantity of demonstrations, spatial proximity, and source versus target originality. Further, we also investigate challenging scenarios involving indirectness and misalignment of examples to understand the limits of ICL. While we establish the significance of the quality of the target distribution over the source distribution of demonstrations, we further observe that perturbations sometimes act as regularizers, resulting in performance improvements. Surprisingly, ICL does not necessitate examples from the same task, and a related task with the same target distribution proves sufficient. We hope that our study acts as a guiding resource for considerations in utilizing ICL for MT. Our code is available on https://github.com/PranjalChitale/in-context-mt-analysis.",
 }
 ```
